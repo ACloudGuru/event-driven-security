@@ -3,7 +3,7 @@ iam = boto3.resource('iam')
 # import json ## uncomment this, if you are wanting to enable debug.
 
 denyPolicyArn = 'POLICYARN::REPLACEME'
-adminGroup = 'iamadmins'
+iamAdminGroup = 'iamadmins'
 
 def lambda_handler( event, context ):
 	# print("Event data:")
@@ -22,13 +22,13 @@ def lambda_handler( event, context ):
 
 		# If the user is a member of the 'admin' group all is good.
 		for group in group_iterator:
-			if group.name == adminGroup:
-				print("User {} is a member of the admin group '{}'. Done.".format( userName, adminGroup ))
+			if group.name == iamAdminGroup:
+				print("User {} is a member of the iamadmins group '{}'. Done.".format( userName, iamAdminGroup ))
 				return
 
 		# The user is not a member of the 'iamadmins' group...they shouldn't be doing this so.....
 		# Revoke users access to IAM
-		print ("User '{}' is not a member of the admin group '{}'".format( userName, adminGroup ))
+		print ("User '{}' is not a member of the iamadmins group '{}'".format( userName, iamAdminGroup ))
 		revokeIamAccess(userName)
 
 # Attach the 'revoke' customer managed policy to the user.
